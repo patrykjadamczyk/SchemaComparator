@@ -1,0 +1,6 @@
+CONSTRAINT_CATALOG,CONSTRAINT_SCHEMA,CONSTRAINT_NAME,TABLE_SCHEMA,TABLE_NAME,CONSTRAINT_TYPE
+def,magento,PRIMARY,magento,admin_passwords,PRIMARY KEY
+def,magento,ADMIN_PASSWORDS_USER_ID_ADMIN_USER_USER_ID,magento,admin_passwords,UNIQUE
+def,magento,PRIMARY,magentso,admin_system_messages,PRIMARY KEY
+def,magento,PRIMARY,magento,admin_user,PRIMARY KEY
+def,magento,ADMIN_USERs_USERNAME,magento,admin_user,UNIQUE

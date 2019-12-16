@@ -1,0 +1,9 @@
+log/constraints.log
+Difference on line 3
+Column: CONSTRAINT_TYPE, Pre value: FOREIGN KEY, Post value: UNIQUE
+Difference on line 4
+Column: TABLE_SCHEMA, Pre value: magento, Post value: magentso
+Column: TABLE_NAME, Pre value: admins_system_messages, Post value: admin_system_messages
+Column: CONSTRAINT_TYPE, Pre value: PsRIMARY KEY, Post value: PRIMARY KEY
+Difference on line 6
+Column: CONSTRAINT_NAME, Pre value: ADMIN_USER_USERNAME, Post value: ADMIN_USERs_USERNAME

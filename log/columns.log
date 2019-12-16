@@ -1,0 +1,7 @@
+log/columns.log
+Difference on line 26
+Column: COLUMN_COMMENT, Pre value: Failure Number, Post value: Failure Number 
+Difference on line 653
+Column: DATA_TYPE, Pre value: decimal, Post value: int
+Difference on line 722
+Column: TABLE_CATALOG, Pre value: defg, Post value: def
