@@ -6,7 +6,6 @@ def,magento,admin_passwords,expires,4,0,NO,int,NULL,NULL,10,0,NULL,NULL,NULL,"in
 def,magento,admin_passwords,last_updated,5,0,NO,int,NULL,NULL,10,0,NULL,NULL,NULL,"int(10) unsigned",,,"select,insert,update,references","Last Updated",
 def,magento,admin_system_messages,identity,1,NULL,NO,varchar,100,300,NULL,NULL,NULL,utf8,utf8_general_ci,varchar(100),PRI,,"select,insert,update,references","Message id",
 def,magento,admin_system_messages,severity,2,0,NO,smallint,NULL,NULL,5,0,NULL,NULL,NULL,"smallint(5) unsigned",,,"select,insert,update,references","Problem type",
-def,magento,admin_system_messages,created_at,3,CURRENT_TIMESTAMP,NO,timestamp,NULL,NULL,NULL,NULL,0,NULL,NULL,timestamp,,,"select,insert,update,references","Create date",
 def,magento,admin_user,user_id,1,NULL,NO,int,NULL,NULL,10,0,NULL,NULL,NULL,"int(10) unsigned",PRI,auto_increment,"select,insert,update,references","User ID",
 def,magento,admin_user,firstname,2,NULL,YES,varchar,32,96,NULL,NULL,NULL,utf8,utf8_general_ci,varchar(32),,,"select,insert,update,references","User First Name",
 def,magento,admin_user,lastname,3,NULL,YES,varchar,32,96,NULL,NULL,NULL,utf8,utf8_general_ci,varchar(32),,,"select,insert,update,references","User Last Name",
