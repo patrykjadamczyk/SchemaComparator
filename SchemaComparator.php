@@ -13,7 +13,13 @@ class SchemaComparator
     private $pre_constraints_map;
     private $post_constraints_map;
 
-
+    /**
+     * SchemaComparator constructor.
+     * @param string $pre_columns
+     * @param string $post_columns
+     * @param string $pre_constraints
+     * @param string $post_constraints
+     */
     public function __construct
     (
         string $pre_columns = 'pre/columns.csv',
@@ -31,15 +37,24 @@ class SchemaComparator
         $this->setMaps();
     }
 
+    /**
+     * @return SchemaComparator
+     */
     private function setMaps(): SchemaComparator
     {
         $this->pre_columns_map = $this->getColumnMap($this->pre_columns_handle);
         $this->post_columns_map = $this->getColumnMap($this->post_columns_handle);
         $this->pre_constraints_map = $this->getConstraintMap($this->pre_constraints_handle);
         $this->post_constraints_map = $this->getConstraintMap($this->post_constraints_handle);
+
         return $this;
     }
 
+    /**
+     * Returns an array representation of column data read from the supplied file
+     * @param $file_handle
+     * @return array
+     */
     private function getColumnMap($file_handle): array
     {
         $map = [];
@@ -51,9 +66,15 @@ class SchemaComparator
             $map[$line['TABLE_NAME']][$line['COLUMN_NAME']]['default'] = $line['COLUMN_DEFAULT'];
             $map[$line['TABLE_NAME']][$line['COLUMN_NAME']]['extra'] = $line['EXTRA'];
         }
+
         return $map;
     }
 
+    /**
+     * Returns an array representation of constraint data read from the supplied file
+     * @param $file_handle
+     * @return array
+     */
     private function getConstraintMap($file_handle): array
     {
         $headers = fgetcsv($file_handle);
@@ -62,6 +83,7 @@ class SchemaComparator
             $line = array_combine($headers, $line);
             $map[$line['TABLE_NAME']][$line['CONSTRAINT_NAME']] = $line['CONSTRAINT_TYPE'];
         }
+
         return $map;
     }
 
@@ -71,12 +93,51 @@ class SchemaComparator
         $this->compareConstraints();
     }
 
+    private function compareColumns(): void
+    {
+        foreach ($this->pre_columns_map as $table_name => $columns) {
+            foreach ($columns as $column_name => $column) {
+                $post_update_column = $this->post_columns_map[$table_name][$column_name] ?? null;
+                if (!$post_update_column) {
+                    fwrite(
+                        $this->columns_log,
+                        "DELETED COLUMN in table $table_name, column: $column_name\n"
+                    );
+                    continue;
+                }
+                if ($post_update_column['type'] !== $column['type']) {
+                    fwrite(
+                        $this->columns_log,
+                        "COLUMN_TYPE mismatch in table $table_name for column $column_name, pre-update value: {$column['type']}, post-update value: {$post_update_column['type']}\n"
+                    );
+                }
+                if ($post_update_column['nullable'] !== $column['nullable']) {
+                    fwrite(
+                        $this->columns_log,
+                        "NULLABLE has changed in table $table_name for column: $column_name, pre-update value: {$column['nullable']}, post-update value: {$post_update_column['nullable']}\n"
+                    );
+                }
+                if ($post_update_column['default'] !== $column['default']) {
+                    fwrite(
+                        $this->columns_log,
+                        "COLUMN_DEFAULT has changed in table $table_name for column: $column_name, pre-update value: {$column['default']}, post-update value: {$post_update_column['default']}\n"
+                    );
+                }
+                if ($post_update_column['extra'] !== $column['extra']) {
+                    fwrite(
+                        $this->columns_log,
+                        "EXTRA has changed in table $table_name for column $column_name, pre-update value: {$column['extra']}, post-update value: {$post_update_column['extra']}\n"
+                    );
+                }
+            }
+        }
+    }
+
     private function compareConstraints(): void
     {
         foreach ($this->pre_constraints_map as $table_name => $constraints) {
             foreach ($constraints as $constraint_name => $constraint_type) {
-                $post_constraint = isset($this->post_constraints_map[$table_name][$constraint_name]) ?
-                    $this->post_constraints_map[$table_name][$constraint_name] : null;
+                $post_constraint = $this->post_constraints_map[$table_name][$constraint_name] ?? null;
                 if (!$post_constraint) {
                     fwrite(
                         $this->constraints_log,
@@ -91,46 +152,4 @@ class SchemaComparator
             }
         }
     }
-
-    private function compareColumns(): void
-    {
-        foreach ($this->pre_columns_map as $table_name => $columns) {
-            foreach ($columns as $column_name => $column) {
-                $post_column = isset($this->post_columns_map[$table_name][$column_name]) ? $this->post_columns_map[$table_name][$column_name] : null;
-                if (!$post_column) {
-                    fwrite(
-                        $this->columns_log,
-                        "DELETED COLUMN in table $table_name, column: $column_name\n"
-                    );
-                    continue;
-                }
-                if ($post_column['type'] !== $column['type']) {
-                    fwrite(
-                        $this->columns_log,
-                        "COLUMN_TYPE mismatch in table $table_name for column $column_name, pre-update value: {$column['type']}, post-update value: {$post_column['type']}\n"
-                    );
-                }
-                if ($post_column['nullable'] !== $column['nullable']) {
-                    fwrite(
-                        $this->columns_log,
-                        "NULLABLE has changed in table $table_name for column: $column_name, pre-update value: {$column['nullable']}, post-update value: {$post_column['nullable']}\n"
-                    );
-                }
-                if ($post_column['default'] !== $column['default']) {
-                    fwrite(
-                        $this->columns_log,
-                        "COLUMN_DEFAULT has changed in table $table_name for column: $column_name, pre-update value: {$column['default']}, post-update value: {$post_column['default']}\n"
-                    );
-                }
-                if ($post_column['extra'] !== $column['extra']) {
-                    fwrite(
-                        $this->columns_log,
-                        "EXTRA has changed in table $table_name for column $column_name, pre-update value: {$column['extra']}, post-update value: {$post_column['extra']}\n"
-                    );
-                }
-            }
-        }
-    }
 }
-
-$x = (new SchemaComparator())->compare();

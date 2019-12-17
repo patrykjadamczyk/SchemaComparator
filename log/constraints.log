@@ -1,2 +1,0 @@
-UNABLE TO FIND CONSTRAINT with name AMAZON_CUSTOMER_CUSTOMER_ID in table amazon_customer after the update
-CONSTRAINT VALUE CHANGED for constraint with name PRIMARY in table amazon_pending_authorization, before the update: PRIMARY KEY, after the update: FOREIGN KEY

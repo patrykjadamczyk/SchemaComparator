@@ -1,0 +1,4 @@
+pre/*.csv
+post/*.csv
+log/*.log
+.idea/

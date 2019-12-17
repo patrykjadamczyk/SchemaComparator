@@ -1,7 +1,0 @@
-EXTRA has changed in table admin_passwords for column password_id, pre-update value: , post-update value: auto_increment
-COLUMN_DEFAULT has changed in table admin_passwords for column: password_hash, pre-update value: NULL, post-update value: 0
-DELETED COLUMN in table admin_system_messages, column: created_at
-COLUMN_TYPE mismatch in table admin_user for column username, pre-update value: integer, post-update value: varchar
-COLUMN_TYPE mismatch in table catalog_product_link_attribute_decimal for column link_id, pre-update value: decimal, post-update value: int
-COLUMN_TYPE mismatch in table cron_schedule for column schedule_id, pre-update value: int, post-update value: varchar
-NULLABLE has changed in table cron_schedule for column: schedule_id, pre-update value: NO, post-update value: YES
