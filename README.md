@@ -1,5 +1,5 @@
 # Schema Comparator
-Schema comparator looks for schema differences comparing 4 .csv files - before and after the update.
+Schema comparator looks for schema differences comparing 4 .csv files - two before and two after the schema update.
 By default it opens files from paths: ```pre/columns.csv```, ```pre/constraints.csv```, ```post/columns.csv``` and ```post/constraints.csv```
 The class is capable of detecting:
 * Columns that are present in ```pre/*.csv``` file but don't exist in ```post/*.csv``` file
